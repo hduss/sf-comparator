@@ -15,4 +15,12 @@ AppBundle\Entity\Offer:
             scale: '2'
         updatedAt:
             type: datetime
+    manyToOne:
+         merchant: 
+             targetEntity: AppBundle\Entity\Merchant 
+             inversedBy: offer
+        product: 
+             targetEntity: AppBundle\Entity\Product 
+             inversedBy: offer 
+
     lifecycleCallbacks: {  }

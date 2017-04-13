@@ -15,4 +15,8 @@ AppBundle\Entity\Product:
         eanCode:
             type: string
             length: '13'
+    oneToMany:
+        offer:
+            targetEntity: AppBundle\Entity\Offer 
+            mappedBy: product
     lifecycleCallbacks: {  }

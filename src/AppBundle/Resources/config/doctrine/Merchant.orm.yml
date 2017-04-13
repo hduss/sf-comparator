@@ -18,4 +18,8 @@ AppBundle\Entity\Merchant:
         feedUrl:
             type: string
             length: 255
+    oneToMany:
+        offer:
+            targetEntity: AppBundle\Entity\Offer 
+            mappedBy: merchant
     lifecycleCallbacks: {  }

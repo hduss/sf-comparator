@@ -2,7 +2,7 @@ parameters:
 
 
 services:
-    app.feef.reader: 
+    app.feed.reader: 
         class: AppBundle\Service\AppFeed 
         arguments: 
             - '@doctrine.orm.default_entity_manager'
