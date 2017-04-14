@@ -3,6 +3,8 @@ parameters:
 
 services:
     app.feed.reader: 
-        class: AppBundle\Service\AppFeed 
+        class: AppBundle\Feed\Reader
         arguments: 
             - '@doctrine.orm.default_entity_manager'
+
+

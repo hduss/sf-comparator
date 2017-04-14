@@ -4,6 +4,8 @@ namespace AppBundle\Feed;
 
 use AppBundle\Entity\Merchant;
 use Doctrine\ORM\EntityManagerInterface;
+// on doit importer l'entitée Offer pour pouvoir s'en servir
+use AppBundle\Entity\Offer; 
 
 /**
  * Class Reader
@@ -37,26 +39,84 @@ class Reader
      */
     public function read(Merchant $merchant)
     {
-        // $count = 0;
 
-        // Lire le flux de données du marchand
 
-        // Convertir les données JSON en tableau
+## recupere l'url de l'instance de la classe Merchant  ##
 
-        // Pour chaque couple de données "code ean / prix"
+        $countUpdate = 0;
 
-            // Trouver le produit correspondant
+        $url = $merchant->getFeedUrl();
 
-                // Sinon passer à l'itération suivante
 
-            // Trouver l'offre correspondant à ce produit et ce marchand
+        $content = file_get_contents($url);
 
-                // Sinon créer l'offre
 
-            // Mettre à jour le prix et la date de mise à jour de l'offre
+// Convertir les données JSON en tableau
+        $data = json_decode($content, true);
 
-            // Enregistrer l'offre et incrémenter le compteur d'offres
+
+        
+
+
+
+        foreach ($data as $row) {
+            
+            $eanCode = $row['ean_code'];
+            $price = $row['price'];
+
+
+
+//on recupere le produit par rapport a son attirbut eanCode
+            $repoProduct = $this->em->getRepository('AppBundle:Product');
+            $product = $repoProduct->findOneBy(['eanCode' => $eanCode]);
+
+
+
+// on recupere l'offre par rapport a l'entitée produit et a l'entitée marchand 
+            $repoOffer = $this->em->getRepository('AppBundle:Offer');
+            $offer = $repoOffer->findOneBy([
+                'product' => $product,
+                'merchant' => $merchant,
+            ]);
+
+// si un produit n'existe pas, on en creer un
+            if ($offer === null) {
+
+                $countCreate = 0;
+
+                $offer = new Offer();
+// on lui set son prix, son entitée merchant et le code qui est lié a l'entitée product
+                $offer 
+                    ->setPrice($price)
+                    ->setMerchant($merchant)
+                    ->setProduct($product)
+
+// on lui assigne une nouvelle date(Now) 
+                    ->setUpdatedAt(new \DateTime());
+
+                    $countCreate ++;
+
+
+            }else{
+// sinon on met a jour le prix et la date de l'offer
+                $offer
+                    ->setPrice($price)
+                    ->setUpdatedAt(new \DateTime());
+            }
+
+
+// puis on persist et on flush le tout en BDD
+            $this->em->persist($offer);
+
+            $this->em->flush();
+
+            $countUpdate ++;
+
+        }
 
         // Renvoyer le nombre d'offres
+        return [$countUpdate, $countCreate];
+        
     }
+
 }

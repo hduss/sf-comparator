@@ -30,9 +30,38 @@ EOT
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+
+
         // Récupérer le service "Feed Reader"
+        $merchantCode = $input->getArgument('merchantCode');
 
         // Récupérer le service "Doctrine Entity Manager"
+
+        $merchant = $this
+            ->getContainer()
+            ->get('doctrine.orm.default_entity_manager')
+            ->getRepository('AppBundle:Merchant')
+            ->findOneByCode($merchantCode);
+
+
+
+        $feedReader = $this
+            ->getContainer()
+            ->get('app.feed.reader');
+
+
+        $count = $feedReader->read($merchant);
+
+
+// en sortie on affiche
+        $output->writeln($count . " Offre crée ou mise a jour");
+
+
+
+
+
+
+
 
         // Trouver le marchand d'après le code passé en argument de la commande
 

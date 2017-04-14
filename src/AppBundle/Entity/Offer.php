@@ -25,6 +25,17 @@ class Offer
     private $updatedAt;
 
 
+
+
+/*---------------------------------------------------*/
+    private $merchant;
+
+
+    private $product;
+
+/*---------------------------------------------------*/
+
+
     /**
      * Get id
      *
@@ -80,4 +91,39 @@ class Offer
     {
         return $this->updatedAt;
     }
+
+/*---------------------------------------------------*/
+
+
+    public function getMerchant()
+    {
+        return $this->merchant;
+    }
+
+
+    public function setMerchant($merchant)
+    {
+        $this->merchant = $merchant;
+
+        return $this;
+
+
+    }
+
+
+    public function getProduct()
+    {
+       return $this->product; 
+    }
+
+
+    public function setProduct($product)
+    {
+        $this->product = $product;
+        return $this;
+    }
+
+
+/*---------------------------------------------------*/
+
 }

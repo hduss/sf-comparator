@@ -16,11 +16,9 @@ AppBundle\Entity\Offer:
         updatedAt:
             type: datetime
     manyToOne:
-         merchant: 
+        merchant: 
              targetEntity: AppBundle\Entity\Merchant 
-             inversedBy: offer
         product: 
              targetEntity: AppBundle\Entity\Product 
-             inversedBy: offer 
 
     lifecycleCallbacks: {  }
